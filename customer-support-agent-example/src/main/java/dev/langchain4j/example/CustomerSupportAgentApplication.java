@@ -6,6 +6,7 @@ import dev.langchain4j.data.document.parser.TextDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
+import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.memory.chat.TokenWindowChatMemory;
 import dev.langchain4j.model.Tokenizer;
 import dev.langchain4j.model.embedding.AllMiniLmL6V2EmbeddingModel;
@@ -63,8 +64,10 @@ public class CustomerSupportAgentApplication {
     }
 
     @Bean
-    ChatMemory chatMemory(Tokenizer tokenizer) {
-        return TokenWindowChatMemory.withMaxTokens(1000, tokenizer);
+    ChatMemory chatMemory() {
+        return MessageWindowChatMemory.builder()
+                .maxMessages(10)
+                .build();
     }
 
     @Bean
